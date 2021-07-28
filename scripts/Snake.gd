@@ -42,6 +42,21 @@ func move() -> bool:
 func get_head() -> Point:
 	return _body.back()
 
+func change_direction(new_direction: int):
+	match _direction:
+		Direction.UP:
+			if new_direction in [Direction.LEFT, Direction.RIGHT]:
+				_direction = new_direction 
+		Direction.DOWN:
+			if new_direction in [Direction.LEFT, Direction.RIGHT]:
+				_direction = new_direction
+		Direction.LEFT:
+			if new_direction in [Direction.UP, Direction.DOWN]:
+				_direction = new_direction
+		Direction.RIGHT:
+			if new_direction in [Direction.UP, Direction.DOWN]:
+				_direction = new_direction
+
 # Check if the snake is out of bounds.
 func _check_bounds(include_front: bool = false) -> bool:
 	var front = true

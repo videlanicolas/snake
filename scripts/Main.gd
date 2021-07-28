@@ -14,6 +14,16 @@ func _ready():
 		snake_body_color, 
 		$Grid)
 
+func _input(event):
+	if event.is_action_pressed("ui_up"):
+		_snake.change_direction(Snake.Direction.UP)
+	elif event.is_action_pressed("ui_down"):
+		_snake.change_direction(Snake.Direction.DOWN)
+	elif event.is_action_pressed("ui_left"):
+		_snake.change_direction(Snake.Direction.LEFT)
+	elif event.is_action_pressed("ui_right"):
+		_snake.change_direction(Snake.Direction.RIGHT)
+
 func _on_SnakeMovementTimer_timeout():
 	if not _snake.move():
 		print("Game over.")

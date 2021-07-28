@@ -52,8 +52,3 @@ func _create_grid():
 			add_child(inst)
 			tmp_array.append(inst)
 		_grid_matrix.append(tmp_array)
-
-func _test():
-	for a in _grid_matrix:
-		for p in a:
-			paint_square(p, Color.brown)
