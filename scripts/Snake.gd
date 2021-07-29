@@ -1,6 +1,9 @@
 extends Object
 
+signal body_grow
+
 enum Direction {
+	UNKNOWN,
 	UP,
 	DOWN,
 	LEFT,
@@ -22,9 +25,13 @@ func _init(start: Point, length: int, fill_color: Color, grid: Grid):
 	_full_draw()
 
 # Move the snake along _direction, returns false if it hit the bounds.
-func move() -> bool:
-	_clear_end()
-	_advance_body()
+func move(grow: bool = false) -> bool:
+	if grow:
+		_body.append(Point.new(_body.back().i, _body.back().j))
+		emit_signal("body_grow")
+	else:
+		_clear_end()
+		_advance_body()
 	match _direction:
 		Direction.UP:
 			_body.back().i -= 1
