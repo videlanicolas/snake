@@ -43,6 +43,8 @@ func move(grow: bool = false) -> bool:
 			_body.back().j += 1
 	if not _check_bounds():
 		return false
+	if _check_overlapping_body():
+		return false
 	_draw_start()
 	return true
 
@@ -63,6 +65,9 @@ func change_direction(new_direction: int):
 		Direction.RIGHT:
 			if new_direction in [Direction.UP, Direction.DOWN]:
 				_direction = new_direction
+
+func _check_overlapping_body() -> bool:
+	 return _grid.get_square_content(get_head())
 
 # Check if the snake is out of bounds.
 func _check_bounds(include_front: bool = false) -> bool:

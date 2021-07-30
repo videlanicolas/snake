@@ -3,6 +3,7 @@ class_name Grid
 extends GridContainer
 
 const Square = preload("res://scenes/Square.tscn")
+const APPLE = "apple"
 const FILLED = "filled"
 const EMPTY = "empty"
 
@@ -18,13 +19,15 @@ func _ready():
 	# Clear the grid.
 	clear()
 
-func paint_square(point: Point, fill_color: Color):
+func paint_square(point: Point, fill_color: Color, apple_group: bool = false):
 	assert(
 		point.i >= 0 and point.i < _height and point.j >= 0 and point.j <= _width,
 		"value out of range: i = %d, j = %d" % [point.i, point.j])
 	_grid_matrix[point.i][point.j].color = fill_color
 	_grid_matrix[point.i][point.j].add_to_group(FILLED)
 	_grid_matrix[point.i][point.j].remove_from_group(EMPTY)
+	if apple_group:
+		_grid_matrix[point.i][point.j].add_to_group(APPLE)
 
 func clear_square(point: Point):
 	assert(
@@ -33,6 +36,13 @@ func clear_square(point: Point):
 	_grid_matrix[point.i][point.j].clear()
 	_grid_matrix[point.i][point.j].add_to_group(EMPTY)
 	_grid_matrix[point.i][point.j].remove_from_group(FILLED)
+	_grid_matrix[point.i][point.j].remove_from_group(APPLE)
+
+func get_square_content(point: Point) -> bool:
+	assert(
+		point.i >= 0 and point.i < _height and point.j >= 0 and point.j < _width,
+		"value out of range: i = %d, j = %d" % [point.i, point.j])
+	return _grid_matrix[point.i][point.j].is_in_group(FILLED) and not _grid_matrix[point.i][point.j].is_in_group(APPLE)
 
 func clear():
 	for a in _grid_matrix:

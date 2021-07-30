@@ -1,5 +1,8 @@
 extends MarginContainer
 
+signal pause
+signal game_over
+
 const Apple = preload("res://scripts/Apple.gd")
 const Snake = preload("res://scripts/Snake.gd")
 
@@ -10,6 +13,8 @@ export(Color) var apple_color = Color.red
 var _apple: Apple
 var _snake: Snake
 var _next_move: int = Snake.Direction.UNKNOWN
+var _paused: bool = false
+var _game_over: bool = false
 
 func _ready():
 	randomize()
@@ -18,6 +23,7 @@ func _ready():
 		snake_start_length, 
 		snake_body_color, 
 		$Grid)
+	_snake.connect("body_grow", $GUI, "increment_score")
 	_snake.connect("body_grow", $SnakeMovementTimer, "increment_timer")
 	_apple = Apple.new(
 		_get_random_empty_grid_point(),
@@ -25,6 +31,17 @@ func _ready():
 		$Grid)
 
 func _input(event):
+	if _game_over:
+		return
+
+	if event.is_action_pressed("ui_pause"):
+		_paused = !_paused
+		emit_signal("pause", _paused)
+	if _paused:
+		if event.is_action_pressed("ui_quit"):
+			get_tree().quit()
+		return
+
 	if _next_move != Snake.Direction.UNKNOWN:
 		return
 	if event.is_action_pressed("ui_up"):
@@ -47,8 +64,18 @@ func _on_SnakeMovementTimer_timeout():
 		_snake.change_direction(_next_move)
 		_next_move = Snake.Direction.UNKNOWN
 	if not _snake.move(grow):
-		print("Game over.")
+		emit_signal("game_over")
 
 func _get_random_empty_grid_point() -> Point:
 	var empty_nodes: Array = get_tree().get_nodes_in_group(Grid.EMPTY)
 	return empty_nodes[randi() % len(empty_nodes)].get_point()
+
+func _on_MarginContainer_pause(paused: bool = false):
+	if paused:
+		$SnakeMovementTimer.stop()
+	else:
+		$SnakeMovementTimer.start()
+
+func _on_MarginContainer_game_over():
+	_game_over = true
+	$SnakeMovementTimer.stop()

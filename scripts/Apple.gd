@@ -15,4 +15,4 @@ func clear():
 	_grid.clear_square(position)
 
 func draw():
-	_grid.paint_square(position, _color)
+	_grid.paint_square(position, _color, true)
