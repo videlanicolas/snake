@@ -39,7 +39,7 @@ func _input(event):
 		emit_signal("pause", _paused)
 	if _paused:
 		if event.is_action_pressed("ui_quit"):
-			get_tree().quit()
+			get_tree().change_scene("res://scenes/MainMenu.tscn")
 		return
 
 	if _next_move != Snake.Direction.UNKNOWN:
@@ -79,3 +79,7 @@ func _on_MarginContainer_pause(paused: bool = false):
 func _on_MarginContainer_game_over():
 	_game_over = true
 	$SnakeMovementTimer.stop()
+	$GameOverTimer.start()
+
+func _on_GameOverTimer_timeout():
+	get_tree().change_scene("res://scenes/MainMenu.tscn")

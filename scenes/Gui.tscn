@@ -51,13 +51,13 @@ margin_bottom = 1200.0
 
 [node name="PauseLabel" type="VBoxContainer" parent="CenterContainer"]
 visible = false
-margin_left = 587.0
+margin_left = 549.0
 margin_top = 455.0
-margin_right = 973.0
+margin_right = 1011.0
 margin_bottom = 705.0
 
 [node name="Pause" type="Label" parent="CenterContainer/PauseLabel"]
-margin_right = 386.0
+margin_right = 462.0
 margin_bottom = 121.0
 custom_fonts/font = SubResource( 2 )
 text = "- Pause -"
@@ -66,11 +66,11 @@ valign = 1
 
 [node name="Controls" type="Label" parent="CenterContainer/PauseLabel"]
 margin_top = 125.0
-margin_right = 386.0
+margin_right = 462.0
 margin_bottom = 250.0
 custom_fonts/font = SubResource( 3 )
 text = "p - pause
-q - quit"
+q - back to main menu"
 align = 1
 valign = 1
 
